@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.c5f9883dd7e4b48d758f3479ef9c5adf.js"
+  "/precache-manifest.b513bd86bbed5c3664d5ad793bf33ba4.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "scp"});
