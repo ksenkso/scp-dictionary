@@ -5,36 +5,79 @@
             <input type="number" v-model="query" name="search" id="search" ref="search" aria-label="Search">
             <button>Найти</button>
         </form>
-        <ScpList :list="list"/>
+        <div class="scp-carousel">
+            <button
+                    @click="switchObject(-1)"
+                    class="scp-carousel__button scp-carousel__button_prev"
+                    aria-label="Предыдущий объект">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 87.45 45.49"><line y1="22.74" x2="49.67" y2="22.74" style="fill:none;stroke:#fff;stroke-miterlimit:10;stroke-width:7px"/><polygon points="84.22 22.74 49.67 2.79 49.67 42.69 84.22 22.74" style="fill:#fff;stroke:#fff;stroke-miterlimit:10;stroke-width:3.2251867020804847px"/></svg>
+            </button>
+            <ScpCard :object="object"/>
+            <button
+                    @click="switchObject(1)"
+                    class="scp-carousel__button scp-carousel__button_next"
+                    aria-label="Следующий объект">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 87.45 45.49"><line y1="22.74" x2="49.67" y2="22.74" style="fill:none;stroke:#fff;stroke-miterlimit:10;stroke-width:7px"/><polygon points="84.22 22.74 49.67 2.79 49.67 42.69 84.22 22.74" style="fill:#fff;stroke:#fff;stroke-miterlimit:10;stroke-width:3.2251867020804847px"/></svg>
+            </button>
+        </div>
     </div>
 </template>
 
 <script>
     import {api} from '../utils';
-    import ScpList from './ScpList';
+    import ScpCard from './ScpCard';
     export default {
         name: "ScpSearch",
-        components: {ScpList},
+        components: {ScpCard},
         data() {
             return {
                 query: '',
-                list: []
+                object: null,
+                number: null
             }
         },
         methods: {
             async onFormSubmit() {
-                const response = await api.get('/objects/' + parseInt(this.query));
+                const number = parseInt(this.query);
+                if (!isNaN(number)) {
+                    this.number = number;
+                    const response = await api.get('/objects/' + number);
+                    if (response) {
+                        this.object = response.data[0];
+                    }
+                }
+            },
+            async switchObject(count) {
+                const response = await api.get('/objects/' + (this.number + count));
                 if (response) {
-                    this.list = response.data;
+                    this.object = response.data[0];
+                    this.number += count;
                 }
             }
+
         }
     }
 </script>
 
 <style scoped lang="sass">
+.scp-carousel
+    display: flex
+    justify-content: space-between
+    &__button
+        min-width: 32px
+        max-width: 64px
+        width: 100%
+        min-height: 64px
+        background-size: contain
+        &_prev svg
+            transform: rotate(180deg)
+
+
 .scp-search
     padding: 12px
+    display: grid
+    grid-template-rows: 1fr auto
+    grid-template-columns: 1fr
 form
     display: grid
     font-size: 20px
