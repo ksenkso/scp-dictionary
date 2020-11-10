@@ -5,7 +5,7 @@
 </template>
 
 <style lang="sass">
-@import "@/assets/styles/main.sass"
+@import "./assets/styles/main"
 html, body
   margin: 0
   padding: 0
