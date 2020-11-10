@@ -80,8 +80,8 @@ export default {
           })
     },
     replaceObjectFromResponse(response) {
-      if (response.data && response.data[0]) {
-        this.object = response.data[0];
+      if (response.data && response.data) {
+        this.object = response.data;
         this.error = null;
       } else {
         this.error = Errors.NOT_FOUND;
