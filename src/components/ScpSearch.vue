@@ -2,7 +2,7 @@
   <div class="scp-search">
     <form @submit.prevent="onFormSubmit" class="form">
       <label for="search">Введите номер объекта:</label>
-      <input type="number" v-model="query" name="search" id="search" ref="search" aria-label="Search">
+      <input type="number" v-model.number="number" min="1" name="search" id="search" ref="search" aria-label="Search">
       <button>Найти</button>
     </form>
     <div class="scp-carousel" v-if="object">
@@ -47,24 +47,21 @@ export default {
   components: {ScpCard},
   data() {
     return {
-      query: '',
       object: null,
       isLoading: false,
       error: null,
-      number: 0,
+      number: '',
     }
   },
   methods: {
     async onFormSubmit() {
-      const number = parseInt(this.query);
-      if (!isNaN(number)) {
-        this.getObject(number)
-      }
+      this.getObject(this.number);
     },
     async switchObject(count) {
       const nextNumber = this.number + count;
       if (nextNumber > 0) {
-        this.getObject(nextNumber);
+        this.number = nextNumber;
+        this.getObject(this.number);
       }
     },
     getObject(number) {
@@ -72,7 +69,6 @@ export default {
       api.get('/objects/' + number)
           .then(response => {
             this.isLoading = false;
-            this.number = number;
             this.replaceObjectFromResponse(response);
           })
           .catch(() => {
@@ -87,7 +83,6 @@ export default {
         this.error = Errors.NOT_FOUND;
       }
     }
-
   },
 }
 </script>
