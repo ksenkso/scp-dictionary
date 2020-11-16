@@ -5,16 +5,18 @@
     </header>
     <h1>Справочник объектов Фонда</h1>
     <ScpSearch/>
+    <Stats/>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import ScpSearch from '@/components/ScpSearch.vue'
+import Stats from '@/components/Stats.vue';
 export default {
   name: 'home',
   components: {
-    ScpSearch
+    ScpSearch,
+    Stats
   }
 }
 </script>
